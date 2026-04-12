@@ -7,19 +7,19 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collection = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 public class User {
     @Id
-    private Long id;
+    private String id;
     private String username;
     private String password;
     private String email;
     private AppRole role;
 
-    public User(Long id, String username, String password, AppRole role, String email) {
+    public User(String id, String username, String password, AppRole role, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -27,7 +27,7 @@ public class User {
         this.email = email;
     }
 
-    public User(Long id, String username, String email, String password) {
+    public User(String id, String username, String email, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
