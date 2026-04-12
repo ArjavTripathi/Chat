@@ -18,7 +18,7 @@ import java.util.List;
 public class Group {
     @Id
     private String id;
-    private String groupId;
+    private String groupName;
     private String ownerId;
 
     private List<String> memberIds = new ArrayList<>();

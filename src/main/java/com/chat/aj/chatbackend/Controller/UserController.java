@@ -1,5 +1,6 @@
 package com.chat.aj.chatbackend.Controller;
 
+import com.chat.aj.chatbackend.DTO.LoginRequest;
 import com.chat.aj.chatbackend.DTO.RegisterRequest;
 import com.chat.aj.chatbackend.Service.User.UserService;
 import com.chat.aj.chatbackend.entities.User;
@@ -25,5 +26,10 @@ public class UserController {
         user.setEmail(registerRequest.getEmail());
         userService.registerUser(user);
         return ResponseEntity.ok("User Registered Successfully!");
+    }
+
+    @PostMapping("/public/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+        return ResponseEntity.ok(userService.authenticatenUser(loginRequest));
     }
 }
