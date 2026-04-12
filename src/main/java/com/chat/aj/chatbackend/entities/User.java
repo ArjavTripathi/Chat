@@ -1,5 +1,6 @@
 package com.chat.aj.chatbackend.entities;
 
+import com.chat.aj.chatbackend.DTO.AppRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,5 +17,21 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private String role = "ROLE_USER";
+    private AppRole role;
+
+    public User(Long id, String username, String password, AppRole role, String email) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.email = email;
+    }
+
+    public User(Long id, String username, String email, String password) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = AppRole.ROLE_USER;
+    }
 }

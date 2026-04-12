@@ -19,6 +19,8 @@ public class Group {
     @Id
     private String id;
     private String groupId;
+    private User owner;
+
 
     private List<Message> messages=new ArrayList<>();
 }
