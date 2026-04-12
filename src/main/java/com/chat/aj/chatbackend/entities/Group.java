@@ -18,7 +18,7 @@ import java.util.List;
 public class Group {
     @Id
     private String id;
-    private String roomId;
+    private String groupId;
 
     private List<Message> messages=new ArrayList<>();
 }
