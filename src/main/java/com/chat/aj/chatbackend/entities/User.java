@@ -18,6 +18,7 @@ public class User {
     private String password;
     private String email;
     private AppRole role;
+    private boolean verified;
 
     public User(String id, String username, String password, AppRole role, String email) {
         this.id = id;
@@ -25,6 +26,7 @@ public class User {
         this.password = password;
         this.role = role;
         this.email = email;
+        this.verified = false;
     }
 
     public User(String id, String username, String email, String password) {
@@ -33,5 +35,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = AppRole.ROLE_USER;
+        this.verified = false;
     }
 }

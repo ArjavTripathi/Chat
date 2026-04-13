@@ -22,4 +22,5 @@ public class Group {
     private String ownerId;
 
     private List<String> memberIds = new ArrayList<>();
+    private List<String> ModeratorIds = new ArrayList<>();
 }
