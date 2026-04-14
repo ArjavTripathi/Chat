@@ -28,11 +28,7 @@ public class UserController {
         user.setUsername(registerRequest.getUsername());
         user.setPassword(registerRequest.getPassword());
         user.setEmail(registerRequest.getEmail());
-        try{
-            userService.registerUser(user);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        userService.registerUser(user);
         return ResponseEntity.ok("User Registered Successfully!");
     }
 

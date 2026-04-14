@@ -1,5 +1,6 @@
 package com.chat.aj.chatbackend.Service.User;
 
+import com.chat.aj.chatbackend.Exceptions.TokenTimeoutException;
 import com.chat.aj.chatbackend.Respositories.TokenRepository;
 import com.chat.aj.chatbackend.Respositories.UserRepository;
 import com.chat.aj.chatbackend.entities.Token;
@@ -43,7 +44,7 @@ public class TokenService {
         return sb.toString();
     }
 
-    public void verifyToken(String t) throws TimeoutException {
+    public void verifyToken(String t){
         Optional<Token> token = tokenRepository.findTokenByToken(t);
         if (token.isEmpty()) {
             throw new AuthenticationCredentialsNotFoundException("Token not found");
@@ -54,7 +55,7 @@ public class TokenService {
         if (tok.isExpired() || tok.isUsed() || minutesBetween >= 30) {
             tok.setExpired(true);
             tokenRepository.save(tok);
-            throw new TimeoutException("Token expired.");
+            throw new TokenTimeoutException("Token expired.");
         }
 
         tok.setUsed(true);

@@ -15,8 +15,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Message {
     @Id
+    private String id;
     private String groupId;
     private String senderId;
     private String content;
     private LocalDateTime timestamp;
+    private MessageType type;
+    public enum MessageType { GROUP, DM }
 }

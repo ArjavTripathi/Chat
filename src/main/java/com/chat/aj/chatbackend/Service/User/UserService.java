@@ -2,6 +2,8 @@ package com.chat.aj.chatbackend.Service.User;
 
 import com.chat.aj.chatbackend.DTO.AppRole;
 import com.chat.aj.chatbackend.DTO.LoginRequest;
+import com.chat.aj.chatbackend.Exceptions.EmailSendException;
+import com.chat.aj.chatbackend.Exceptions.NullValueException;
 import com.chat.aj.chatbackend.Respositories.TokenRepository;
 import com.chat.aj.chatbackend.Respositories.UserRepository;
 import com.chat.aj.chatbackend.Service.Email.EmailService;
@@ -29,7 +31,10 @@ public class UserService {
     private EmailService emailService;
     private JwtUtils jwtUtils;
 
-    public User registerUser(User user) throws Exception {
+    public User registerUser(User user) {
+        if(user.getUsername() == null || user.getPassword() == null || user.getEmail() == null || user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty()){
+            throw new NullValueException("All fields need a value");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(AppRole.ROLE_USER);
         user.setVerified(false);
@@ -41,7 +46,7 @@ public class UserService {
             emailService.sendEmail(savedUser.getEmail(), token);
         } catch (Exception e) {
             log.error("Error sending email: {}", e.getMessage());
-            throw new Exception("Failed to send verification email");
+            throw new EmailSendException("Error sending email");
         }
 
         return savedUser;
