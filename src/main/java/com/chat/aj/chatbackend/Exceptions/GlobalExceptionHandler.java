@@ -41,6 +41,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleEmailSend(EmailSendException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+    }
 
     public record ErrorResponse(String message) {}
 }
