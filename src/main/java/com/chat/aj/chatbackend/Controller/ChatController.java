@@ -9,6 +9,7 @@ import com.chat.aj.chatbackend.Respositories.ConversationRepository;
 import com.chat.aj.chatbackend.Respositories.GroupRepository;
 import com.chat.aj.chatbackend.Respositories.MessageRepository;
 import com.chat.aj.chatbackend.Respositories.UserRepository;
+import com.chat.aj.chatbackend.entities.Conversation;
 import com.chat.aj.chatbackend.entities.Group;
 import com.chat.aj.chatbackend.entities.Message;
 import com.chat.aj.chatbackend.entities.User;
@@ -70,6 +71,38 @@ public class ChatController {
         );
 
         messagingTemplate.convertAndSend("/topic/group/" + groupId, response);
+    }
+
+    @MessageMapping("/dm/{conversationId}")
+    public void sendDmMessage(
+            @DestinationVariable String conversationId,
+            @Payload MessageRequest request,
+            Principal principal
+    ) {
+        Conversation conversation = conversationRepository.findById(conversationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Conversation not found"));
+
+        if (!conversation.getParticipantIds().contains(request.getSender())){
+            throw new BadRequestException("User is not part of the conversation");
+        }
+
+        Message message = new Message();
+        message.setGroupId(conversationId);
+        message.setSenderId(request.getSender());
+        message.setContent(request.getContent());
+        message.setTimestamp(LocalDateTime.now());
+        message.setType(Message.MessageType.DM);
+        messageRepository.save(message);
+
+        User sender = userRepository.findById(request.getSender())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        MessageResponse response = new MessageResponse(
+                message.getId(), conversationId, sender.getId(),
+                sender.getUsername(), message.getContent(), message.getTimestamp()
+        );
+
+        messagingTemplate.convertAndSend("/topic/dm" + conversationId, response);
     }
 
 }

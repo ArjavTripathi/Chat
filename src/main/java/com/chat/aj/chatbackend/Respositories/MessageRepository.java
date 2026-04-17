@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface MessageRepository extends MongoRepository<Message, String> {
-    List<Message> findByRoomIdOrderByTimestampAsc(String roomId);
-    Page<Message> findByRoomIdOrderByTimestampDesc(String roomId, Pageable pageable);
+    List<Message> findByGroupIdOrderByTimestampAsc(String groupId);
+    Page<Message> findByGroupIdOrderByTimestampDesc(String groupId, Pageable pageable);
 }
