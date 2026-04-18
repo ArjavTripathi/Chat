@@ -9,6 +9,8 @@ import com.chat.aj.chatbackend.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GroupService {
     private final UserService userService;
@@ -20,14 +22,18 @@ public class GroupService {
         this.groupRepository = groupRepository;
     }
 
+    public void createNewGroup(String groupname, String name) {
+        User user = userService.findByUsername(name);
+        Group group = new Group();
+        group.setGroupName(groupname);
+        group.setOwnerId(user.getId());
+        groupRepository.save(group);
+    }
 
-
-    public void createNewGroup(GroupCreationRequest newgrp) {
-        if(userService.findById(newgrp.getOwnerid()) != null){
-            Group group = new Group();
-            group.setGroupName(newgrp.getGroupName());
-            group.setOwnerId(newgrp.getOwnerid());
-            groupRepository.save(group);
-        }
+    public List<Group> getGroups(String name) {
+            User user = userService.findByUsername(name);
+            List<Group> groups = groupRepository.findByOwnerId(user.getId());
+            groups.addAll(groupRepository.findByMemberIdsContainingOrModeratorIdsContaining(user.getId(), user.getId()));
+            return groups;
     }
 }

@@ -6,6 +6,5 @@ import java.util.List;
 
 @Data
 public class GroupCreationRequest {
-    public String ownerid;
     public String groupName;
 }
