@@ -41,4 +41,10 @@ public class RoomController { //Make group, start dm, close dm, delete group,
         List<Group> myGroups = groupService.getGroups(principal.getName());
         return ResponseEntity.ok(myGroups);
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteGroup(Principal principal, @RequestParam String groupId){
+        groupService.deleteGroup(principal.getName(), groupId);
+        return ResponseEntity.ok("Group deleted");
+    }
 }

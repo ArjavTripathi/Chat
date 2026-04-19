@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface GroupRepository extends MongoRepository<Group, String> {
     Group findByGroupName(String GroupName);
-
     List<Group> findByOwnerId(String ownerId);
     List<Group> findByMemberIdsContainingOrModeratorIdsContaining(String memberId, String moderatorId);
+    boolean existsByIdAndModeratorIds(String groupId, String userId);
+    boolean existsByIdAndMemberIds(String groupId, String userId);
 }
