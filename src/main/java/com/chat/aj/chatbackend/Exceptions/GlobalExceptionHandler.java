@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NullValueException.class)
     public ResponseEntity<ErrorResponse> handleNullValue(NullValueException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EmailSendException.class)
@@ -43,7 +43,12 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConfict(ConflictException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage()));
     }
 
     public record ErrorResponse(String message) {}

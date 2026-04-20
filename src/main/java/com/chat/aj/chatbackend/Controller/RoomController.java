@@ -47,4 +47,6 @@ public class RoomController { //Make group, start dm, close dm, delete group,
         groupService.deleteGroup(principal.getName(), groupId);
         return ResponseEntity.ok("Group deleted");
     }
+
+    @PostMapping("/invites/")
 }
