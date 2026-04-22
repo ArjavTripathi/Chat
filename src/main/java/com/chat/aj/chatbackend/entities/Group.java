@@ -23,4 +23,16 @@ public class Group {
 
     private List<String> memberIds = new ArrayList<>();
     private List<String> moderatorIds = new ArrayList<>();
+
+    public void addToMembers(String id){
+        if(!memberIds.contains(id)){
+            memberIds.add(id);
+        }
+    }
+
+    public void addToModerators(String id){
+        if(!moderatorIds.contains(id)){
+            moderatorIds.add(id);
+        }
+    }
 }
