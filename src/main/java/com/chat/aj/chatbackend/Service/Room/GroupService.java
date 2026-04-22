@@ -2,6 +2,7 @@ package com.chat.aj.chatbackend.Service.Room;
 
 import com.chat.aj.chatbackend.DTO.GroupCreationRequest;
 import com.chat.aj.chatbackend.Exceptions.BadRequestException;
+import com.chat.aj.chatbackend.Exceptions.ConflictException;
 import com.chat.aj.chatbackend.Exceptions.ResourceNotFoundException;
 import com.chat.aj.chatbackend.Respositories.GroupRepository;
 import com.chat.aj.chatbackend.Service.User.UserService;
@@ -29,6 +30,7 @@ public class GroupService {
         Group group = new Group();
         group.setGroupName(groupname);
         group.setOwnerId(user.getId());
+        group.addToMembers(user.getId());
         groupRepository.save(group);
     }
 
@@ -50,5 +52,25 @@ public class GroupService {
         } else {
             throw new ResourceNotFoundException("Do you own or moderate this group?");
         }
+    }
+
+    public boolean checkIfMemberInGroup(String memberId, String groupId){
+        return groupRepository.existsByIdAndMemberIds(groupId, memberId);
+    }
+
+    public void leaveGroup(String name, String groupId) {
+        User user = userService.findByUsername(name);
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new ResourceNotFoundException("Group not found"));
+
+        if(group.getOwnerId().equals(user.getId())){
+            throw new ConflictException("You are the owner. You cannot leave your own group, you must delete it instead.");
+        } else if(!group.getMemberIds().contains(user.getId())){
+            throw new ConflictException("You are not in this group");
+        }
+
+        group.getMemberIds().remove(user.getId());
+        group.getModeratorIds().remove(user.getId());
+        groupRepository.save(group);
     }
 }
