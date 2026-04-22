@@ -13,10 +13,8 @@ import java.time.LocalDateTime;
 public class GroupInvite {
     @Id
     private String id;
-    private String link
+    private String link;
     private String groupId;
-    private String inviterId;
-    private String inviteeId;
     private InviteStatus status;
     private LocalDateTime createdAt;
 
