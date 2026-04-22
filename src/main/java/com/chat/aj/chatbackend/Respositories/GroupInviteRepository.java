@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GroupInviteRepository extends MongoRepository<GroupInvite, String> {
     GroupInvite findGroupInviteByStatus(GroupInvite.InviteStatus status);
+
+    GroupInvite findByLink(String link);
 }
