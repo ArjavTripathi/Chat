@@ -24,7 +24,7 @@ public class JwtUtils {
     private String jwtSecret;
 
     @Value("${jwt.expiration}")
-    private int jwtExpirationMs;
+    private long jwtExpirationMs;
 
     public String generateToken(UserDetailsImpl userDetails){
         String username = userDetails.getUsername();
@@ -65,10 +65,16 @@ public class JwtUtils {
             Jwts.parser().verifyWith((SecretKey) key())
                     .build().parseSignedClaims(authToken);
             return true;
-        } catch (IllegalArgumentException | JwtException e) {
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            log.error("JWT token is expired: {}", e.getMessage());
+        } catch (io.jsonwebtoken.MalformedJwtException e) {
             log.error("Invalid JWT token: {}", e.getMessage());
-            return false;
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            log.error("Invalid JWT signature: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims string is empty: {}", e.getMessage());
         }
+        return false;
     }
 
 }
