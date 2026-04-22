@@ -68,6 +68,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/v1/users/**").authenticated()
                         .requestMatchers("/api/v1/messages/**").authenticated()
                         .requestMatchers("/chat/**").permitAll()
+                        .requestMatchers("/i/**").authenticated()
                         .anyRequest().authenticated()
                 );
 
